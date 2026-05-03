@@ -76,6 +76,19 @@ TIPS = {
     },
 }
 
+import subprocess
+import sys
+
+def auto_train():
+    if not os.path.exists("model_red.pkl"):
+        st.info("⏳ Model belum ada, sedang training otomatis... mohon tunggu 1-2 menit")
+        subprocess.run([sys.executable, "step1_download_data.py"])
+        subprocess.run([sys.executable, "step3_train_model.py"])
+        st.success("✅ Training selesai! Silakan refresh halaman.")
+        st.stop()
+
+auto_train()
+
 @st.cache_resource
 def load_model(wine_type):
     if not os.path.exists(f"model_{wine_type}.pkl"):
