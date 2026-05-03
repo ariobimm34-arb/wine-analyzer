@@ -4,6 +4,8 @@ import numpy as np
 import joblib
 import os
 import matplotlib.pyplot as plt
+import subprocess
+import sys
 
 st.set_page_config(page_title="Wine Quality Analyzer", page_icon="🍷", layout="wide")
 
@@ -23,20 +25,34 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# ---- Auto Training ----
+def auto_train():
+    if not os.path.exists("model_red.pkl"):
+        st.warning("⏳ Model belum ada, sedang training otomatis... mohon tunggu 1-2 menit")
+        with st.spinner("Downloading dataset..."):
+            subprocess.run([sys.executable, "step1_download_data.py"])
+        with st.spinner("Training model Red Wine..."):
+            subprocess.run([sys.executable, "step3_train_model.py"])
+        st.success("✅ Training selesai! Silakan refresh halaman.")
+        st.stop()
+
+auto_train()
+
+# ---- Data rekomendasi produk wine ----
 RED_WINE_PRODUCTS = {
     "High": [
-        {"name": "Château Margaux",     "origin": "Perancis",       "desc": "Mewah, kompleks, aroma buah gelap & kayu oak"},
-        {"name": "Opus One",            "origin": "California, USA", "desc": "Full-bodied, fruity, salah satu red wine terbaik dunia"},
-        {"name": "Penfolds Grange",     "origin": "Australia",       "desc": "Kuat, tannic, cocok untuk aging jangka panjang"},
-        {"name": "Sassicaia",           "origin": "Italia",          "desc": "Elegan, mineral, Super Tuscan terbaik"},
-        {"name": "Caymus Cabernet",     "origin": "Napa Valley, USA","desc": "Lembut, kaya, cocok untuk pemula wine premium"},
+        {"name": "Château Margaux",     "origin": "Perancis",        "desc": "Mewah, kompleks, aroma buah gelap & kayu oak"},
+        {"name": "Opus One",            "origin": "California, USA",  "desc": "Full-bodied, fruity, salah satu red wine terbaik dunia"},
+        {"name": "Penfolds Grange",     "origin": "Australia",        "desc": "Kuat, tannic, cocok untuk aging jangka panjang"},
+        {"name": "Sassicaia",           "origin": "Italia",           "desc": "Elegan, mineral, Super Tuscan terbaik"},
+        {"name": "Caymus Cabernet",     "origin": "Napa Valley, USA", "desc": "Lembut, kaya, cocok untuk pemula wine premium"},
     ],
     "Medium": [
-        {"name": "Jacob's Creek Shiraz","origin": "Australia",       "desc": "Populer, mudah didapat, rasa buah yang menyenangkan"},
-        {"name": "Malbec Catena",       "origin": "Argentina",       "desc": "Buah gelap, lembut, harga terjangkau"},
-        {"name": "Chianti Classico",    "origin": "Italia",          "desc": "Asam, earthy, cocok diminum bersama pasta"},
-        {"name": "Yellow Tail Cabernet","origin": "Australia",       "desc": "Ramah di lidah, cocok untuk sehari-hari"},
-        {"name": "Concha y Toro",       "origin": "Chile",           "desc": "Buah segar, ringan, sangat populer di Asia"},
+        {"name": "Jacob's Creek Shiraz","origin": "Australia",        "desc": "Populer, mudah didapat, rasa buah yang menyenangkan"},
+        {"name": "Malbec Catena",       "origin": "Argentina",        "desc": "Buah gelap, lembut, harga terjangkau"},
+        {"name": "Chianti Classico",    "origin": "Italia",           "desc": "Asam, earthy, cocok diminum bersama pasta"},
+        {"name": "Yellow Tail Cabernet","origin": "Australia",        "desc": "Ramah di lidah, cocok untuk sehari-hari"},
+        {"name": "Concha y Toro",       "origin": "Chile",            "desc": "Buah segar, ringan, sangat populer di Asia"},
     ],
     "Low": [
         {"name": "Belum memenuhi standar produk komersial", "origin": "-", "desc": "Parameter kimia perlu diperbaiki sebelum layak dijual"},
@@ -45,11 +61,11 @@ RED_WINE_PRODUCTS = {
 
 WHITE_WINE_PRODUCTS = {
     "High": [
-        {"name": "Puligny-Montrachet",         "origin": "Perancis",        "desc": "Mewah, mineral, salah satu white wine terbaik dunia"},
-        {"name": "Cloudy Bay Sauvignon Blanc", "origin": "New Zealand",     "desc": "Segar, citrusy, sangat populer & mudah dinikmati"},
-        {"name": "Riesling Dr. Loosen",        "origin": "Jerman",          "desc": "Manis-asam sempurna, aromatik, cocok makanan pedas"},
-        {"name": "Gaja Gaia & Rey Chardonnay", "origin": "Italia",          "desc": "Kompleks, creamy, premium Italia"},
-        {"name": "Leeuwin Estate Art Series",  "origin": "Australia",       "desc": "Buttery, vanilla, chardonnay kelas dunia"},
+        {"name": "Puligny-Montrachet",          "origin": "Perancis",        "desc": "Mewah, mineral, salah satu white wine terbaik dunia"},
+        {"name": "Cloudy Bay Sauvignon Blanc",  "origin": "New Zealand",     "desc": "Segar, citrusy, sangat populer & mudah dinikmati"},
+        {"name": "Riesling Dr. Loosen",         "origin": "Jerman",          "desc": "Manis-asam sempurna, aromatik, cocok makanan pedas"},
+        {"name": "Gaja Gaia & Rey Chardonnay",  "origin": "Italia",          "desc": "Kompleks, creamy, premium Italia"},
+        {"name": "Leeuwin Estate Art Series",   "origin": "Australia",       "desc": "Buttery, vanilla, chardonnay kelas dunia"},
     ],
     "Medium": [
         {"name": "Kim Crawford Sauvignon Blanc",  "origin": "New Zealand",     "desc": "Ringan, fruity, sangat mudah diminum"},
@@ -76,19 +92,7 @@ TIPS = {
     },
 }
 
-import subprocess
-import sys
-
-def auto_train():
-    if not os.path.exists("model_red.pkl"):
-        st.info("⏳ Sedang training model otomatis... tunggu 1-2 menit")
-        subprocess.run([sys.executable, "step1_download_data.py"])
-        subprocess.run([sys.executable, "step3_train_model.py"])
-        st.success("✅ Training selesai! Silakan refresh halaman.")
-        st.stop()
-
-auto_train()
-
+# ---- Load model ----
 @st.cache_resource
 def load_model(wine_type):
     if not os.path.exists(f"model_{wine_type}.pkl"):
@@ -98,9 +102,11 @@ def load_model(wine_type):
     features = joblib.load(f"features_{wine_type}.pkl")
     return model, scaler, features
 
+# ---- Header ----
 st.markdown('<h1 class="main-title">🍷 Wine Quality Analyzer</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-title">Prediksi kualitas wine berdasarkan parameter kimia + rekomendasi produk serupa</p>', unsafe_allow_html=True)
 
+# ---- Sidebar ----
 st.sidebar.header("⚙️ Pengaturan")
 wine_type = st.sidebar.radio("Jenis Wine", ["Red Wine 🍷", "White Wine 🥂"])
 wt = "red" if "Red" in wine_type else "white"
@@ -113,6 +119,8 @@ if model is None:
     st.stop()
 
 st.sidebar.success(f"Model siap ✅")
+
+# ---- Input parameter ----
 st.subheader("📊 Masukkan Parameter Kimia Wine")
 
 col1, col2, col3 = st.columns(3)
@@ -133,6 +141,7 @@ with col3:
 
 st.markdown("---")
 
+# ---- Tombol analisa ----
 if st.button("🔬 Analisa Kualitas Wine", use_container_width=True, type="primary"):
     input_data   = pd.DataFrame([[fixed_acidity, volatile_acidity, citric_acid, residual_sugar,
                                    chlorides, free_so2, total_so2, density, ph, sulphates, alcohol]],
