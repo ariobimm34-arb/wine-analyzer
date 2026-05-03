@@ -13,15 +13,18 @@ st.markdown("""
 <style>
 .main-title { font-size:2.4rem; font-weight:700; color:#7F0000; text-align:center; }
 .sub-title  { text-align:center; color:#888; margin-bottom:2rem; }
-.result-high   { background:#E8F5E9; border:2px solid #2E7D32; padding:1.5rem; border-radius:12px; text-align:center; }
-.result-medium { background:#FFF8E1; border:2px solid #C8A84B; padding:1.5rem; border-radius:12px; text-align:center; }
-.result-low    { background:#FFEBEE; border:2px solid #B71C1C; padding:1.5rem; border-radius:12px; text-align:center; }
-.rec-box { background:#F8F4FF; border:1.5px solid #9C6FD6; border-radius:12px; padding:1.2rem 1.5rem; margin-top:1rem; }
-.rec-box-white { background:#F0F8FF; border:1.5px solid #4A90D9; border-radius:12px; padding:1.2rem 1.5rem; margin-top:1rem; }
-.rec-title { font-size:1rem; font-weight:700; margin-bottom:0.5rem; }
-.rec-item { padding:6px 0; border-bottom:1px solid #eee; font-size:0.9rem; }
+.result-high   { background:#E8F5E9; border:2px solid #2E7D32; padding:1.5rem; border-radius:12px; text-align:center; color:#000000 !important; }
+.result-medium { background:#FFF8E1; border:2px solid #C8A84B; padding:1.5rem; border-radius:12px; text-align:center; color:#000000 !important; }
+.result-low    { background:#FFEBEE; border:2px solid #B71C1C; padding:1.5rem; border-radius:12px; text-align:center; color:#000000 !important; }
+.result-high * , .result-medium *, .result-low * { color:#000000 !important; }
+.rec-box { background:#F8F4FF; border:1.5px solid #9C6FD6; border-radius:12px; padding:1.2rem 1.5rem; margin-top:1rem; color:#000000 !important; }
+.rec-box-white { background:#F0F8FF; border:1.5px solid #4A90D9; border-radius:12px; padding:1.2rem 1.5rem; margin-top:1rem; color:#000000 !important; }
+.rec-box *, .rec-box-white * { color:#000000 !important; }
+.rec-title { font-size:1rem; font-weight:700; margin-bottom:0.5rem; color:#000000 !important; }
+.rec-item { padding:6px 0; border-bottom:1px solid #ccc; font-size:0.9rem; color:#000000 !important; }
 .rec-item:last-child { border-bottom:none; }
-.tip-box { background:#FFFDE7; border:1.5px solid #F9A825; border-radius:10px; padding:1rem 1.2rem; margin-top:1rem; font-size:0.9rem; }
+.tip-box { background:#FFFDE7; border:1.5px solid #F9A825; border-radius:10px; padding:1rem 1.2rem; margin-top:1rem; font-size:0.9rem; color:#000000 !important; }
+.tip-box * { color:#000000 !important; }
 </style>
 """, unsafe_allow_html=True)
 
