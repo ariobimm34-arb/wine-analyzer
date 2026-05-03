@@ -75,6 +75,7 @@ TIPS = {
         "Low":    "White wine kamu perlu perbaikan. Cek kadar volatile acidity dan pastikan Free SO₂ dalam batas optimal. ⚠️",
     },
 }
+
 import subprocess
 import sys
 
