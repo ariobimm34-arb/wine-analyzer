@@ -75,13 +75,12 @@ TIPS = {
         "Low":    "White wine kamu perlu perbaikan. Cek kadar volatile acidity dan pastikan Free SO₂ dalam batas optimal. ⚠️",
     },
 }
-
 import subprocess
 import sys
 
 def auto_train():
     if not os.path.exists("model_red.pkl"):
-        st.info("⏳ Model belum ada, sedang training otomatis... mohon tunggu 1-2 menit")
+        st.info("⏳ Sedang training model otomatis... tunggu 1-2 menit")
         subprocess.run([sys.executable, "step1_download_data.py"])
         subprocess.run([sys.executable, "step3_train_model.py"])
         st.success("✅ Training selesai! Silakan refresh halaman.")
